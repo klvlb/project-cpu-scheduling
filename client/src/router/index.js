@@ -1,25 +1,25 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../components/Home.vue";
-import Scheduling from "../components/CPUScheduling.vue";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../components/Home.vue';
+import Scheduling from '../components/Scheduling.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
   },
   {
-    path: "/cpu-scheduling",
-    name: "Scheduling",
+    path: '/cpu-scheduling',
+    name: 'Scheduling',
     component: Scheduling,
   },
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
 });

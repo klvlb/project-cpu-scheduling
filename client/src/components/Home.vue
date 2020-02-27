@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Scheduling",
+  name: 'Home',
   //   components: {
   //     HelloWorld,
   //   },
