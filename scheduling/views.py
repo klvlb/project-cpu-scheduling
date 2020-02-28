@@ -17,3 +17,20 @@ def first_come_first_serve(processes):
     gantt_chart['ave_waiting_time'] = ave_waiting_time / float(len(processes))
     print(f'{gantt_chart}')
     return gantt_chart
+
+def shortest_job_first(processes):
+    start_time = 0
+    end_time = 0
+    ave_waiting_time = 0
+    gantt_chart = {'sequence': list(processes)}
+    gantt_chart['sequence'] = sorted(processes, key=itemgetter('burst'))
+    for item in gantt_chart['sequence']:
+        item.pop('arrival', None)
+        end_time += int(item['burst'])
+        ave_waiting_time += start_time
+        item['start_time'] = start_time
+        item['end_time'] = end_time
+        start_time = end_time
+    gantt_chart['ave_waiting_time'] = ave_waiting_time / float(len(processes))
+    print(f'{gantt_chart}')
+    return gantt_chart
