@@ -1,7 +1,7 @@
 <template>
   <div>
     <form method='post' id='algo-form'>
-      <select id='algo' name='algo-list' form='algo-form'>
+      <select id='algo-select' ref='algoSelect' name='algo-list' form='algo-form'>
         <option value='fcfs'>First-Come, First-Served</option>
         <option value='sjf'>Shortest Job First</option>
         <option value='srtf'>Shortest Remaining Time First</option>
@@ -39,6 +39,7 @@
         Graph
       </button>
     </form>
+    {{ algo }}
     {{ calculations }}
   </div>
 </template>
@@ -53,10 +54,12 @@ export default {
       processes: [],
       processCount: 1,
       calculations: [],
+      algo: '',
     };
   },
   methods: {
     addProcess() {
+      this.algo = this.$refs.algoSelect.value;
       const [arrival, burst] = [
         this.$refs.arrivalTimeInput.value,
         this.$refs.burstTimeInput.value,
@@ -71,11 +74,14 @@ export default {
       }
     },
     submitAlgoForm() {
-      const path = 'http://localhost:5000/cpu-scheduling';
-      axios.post(path, this.processes)
+      const path = 'http://127.0.0.1:5000/cpu-scheduling';
+      axios.post(path, {
+        algo: this.algo,
+        processes: this.processes,
+      })
         .then((res) => {
           this.calculations = res.data;
-          console.log('calculations', this.calculations);
+          // console.log('calculations', this.calculations);
         })
         .catch((error) => {
           // eslint-disable-next-line
