@@ -42,7 +42,6 @@ def shortest_job_first(processes):
 
 def shortest_time_remaining_first(processes):
     start_time, end_time, ave_waiting_time, burst_sum = 0, 0, 0, 0
-    terminate = False
     gantt_chart = {'sequence': []}
     processes_copy = sorted(list(processes), key=itemgetter('arrival'))
     duration = 1
@@ -58,24 +57,22 @@ def shortest_time_remaining_first(processes):
 
         if int(shortest['burst']) < 1:
             processes_copy = [p for p in processes_copy if p['process'] != shortest['process']]
-        # print(f'new list: {processes_copy}')
 
         end_time += 1
         if gantt_chart['sequence']:
             last = gantt_chart['sequence'][-1]
-            print(f'last : {last}\nshortest: {shortest}')
             if shortest['process'] != last['process']:
-                print(f'append')
                 duration = 1
+                start_time = last['end_time']
                 gantt_chart['sequence'].append({
                     'process': shortest['process'],
                     'burst': shortest['burst'],
+                    'start_time': start_time,
                     'end_time': end_time,
                     'duration': duration
                 })
             else:
                 duration += 1
-                print('haloo')
                 gantt_chart['sequence'][-1]['burst'] = str(int(gantt_chart['sequence'][-1]['burst']) - 1)
                 gantt_chart['sequence'][-1]['end_time'] = end_time
                 gantt_chart['sequence'][-1]['duration'] = duration
@@ -84,11 +81,13 @@ def shortest_time_remaining_first(processes):
             gantt_chart['sequence'].append({
                 'process': shortest['process'],
                 'burst': shortest['burst'],
+                'start_time': start_time,
                 'end_time': end_time,
                 'duration': duration
             })
+            start_time = end_time
 
-        print(f'alive @ time {end_time}: {sorted_alive}\ngantt: {gantt_chart}\n\n')
+    print(f'alive @ time {end_time}: {sorted_alive}\ngantt: {gantt_chart}\n\n')
     return gantt_chart
 
 
