@@ -45,6 +45,31 @@ def shortest_time_remaining_first(processes):
     gantt_chart = {'sequence': []}
     processes_copy = sorted(list(processes), key=itemgetter('arrival'))
     duration = 1
+
+    def append_new_process(p_no, p_burst):
+        gantt_chart['sequence'].append({
+            'process': p_no,
+            'burst': p_burst,
+            'start_time': start_time,
+            'end_time': end_time,
+            'duration': duration
+        })
+
+    def compute_awt():
+        awt = 0
+        for p in list(processes):
+            occurrences = [j for j in gantt_chart['sequence'] if j['process'] == p['process']]
+            previous = {}  # previous occurrence
+            pwt = 0  # process waiting time
+            for index, value in enumerate(occurrences):
+                if index < 1:
+                    pwt += value['start_time'] - int(p['arrival'])
+                    previous = value
+                else:
+                    pwt += value['start_time'] - previous['end_time']
+            awt += pwt
+        return awt
+
     for i in processes_copy:
         burst_sum += int(i['burst'])
 
@@ -64,13 +89,7 @@ def shortest_time_remaining_first(processes):
             if shortest['process'] != last['process']:
                 duration = 1
                 start_time = last['end_time']
-                gantt_chart['sequence'].append({
-                    'process': shortest['process'],
-                    'burst': shortest['burst'],
-                    'start_time': start_time,
-                    'end_time': end_time,
-                    'duration': duration
-                })
+                append_new_process(shortest['process'], shortest['burst'])
             else:
                 duration += 1
                 gantt_chart['sequence'][-1]['burst'] = str(int(gantt_chart['sequence'][-1]['burst']) - 1)
@@ -78,21 +97,15 @@ def shortest_time_remaining_first(processes):
                 gantt_chart['sequence'][-1]['duration'] = duration
         else:
             duration = 1
-            gantt_chart['sequence'].append({
-                'process': shortest['process'],
-                'burst': shortest['burst'],
-                'start_time': start_time,
-                'end_time': end_time,
-                'duration': duration
-            })
+            append_new_process(shortest['process'], shortest['burst'])
             start_time = end_time
-
-    print(f'alive @ time {end_time}: {sorted_alive}\ngantt: {gantt_chart}\n\n')
+    ave_waiting_time = compute_awt()
+    gantt_chart['ave_waiting_time'] = ave_waiting_time / float(len(processes))
     return gantt_chart
 
 
 def round_robin(processes):
-    return f'rr'
+    return f'round'
 
 
 def priority(processes):
