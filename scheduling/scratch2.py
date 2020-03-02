@@ -87,3 +87,50 @@ def successful():
 
         print(f'alive @ time {end_time}: {sorted_alive}\ngantt: {gantt_chart}\n\n')
     return gantt_chart
+
+
+def round_robin(processes):
+    start_time, end_time, ave_waiting_time, burst_sum, index, duration = 0, 0, 0, 0, 0, 0
+    q = 4  # quantum
+    gantt_chart = {'sequence': []}
+    processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+
+    def compute_awt():
+        awt = 0
+        for p in list(processes):
+            occurrences = [j for j in gantt_chart['sequence'] if j['process'] == p['process']]
+            previous = {}  # previous occurrence
+            pwt = 0  # process waiting time
+            for index, value in enumerate(occurrences):
+                if index < 1:
+                    pwt += value['start_time']
+                    previous = value
+                else:
+                    pwt += value['start_time'] - previous['end_time']
+                    # pwt += previous['duration']
+                    previous = value
+            awt += pwt
+        return awt
+
+    for i in processes_copy:
+        burst_sum += int(i['burst'])
+
+    while end_time < burst_sum:
+        p_burst = int(processes_copy[index]['burst'])
+        d = p_burst - q  # difference
+        duration = p_burst if d < 0 else q
+        end_time += duration
+        processes_copy[index]['burst'] = str(p_burst - duration)
+        gantt_chart['sequence'].append({
+            'process': processes_copy[index]['process'],
+            'start_time': start_time,
+            'end_time': end_time,
+            'duration': duration
+        })
+        start_time = end_time
+        index = 0 if index == len(processes_copy) - 1 else index + 1
+    ave_waiting_time = compute_awt() / len(processes_copy)
+    gantt_chart['ave_waiting_time'] = ave_waiting_time
+    print(f'gantt: {gantt_chart}')
+    return gantt_chart
+
