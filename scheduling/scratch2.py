@@ -134,3 +134,69 @@ def round_robin(processes):
     print(f'gantt: {gantt_chart}')
     return gantt_chart
 
+
+def priority_round_robin(processes):
+    start_time, end_time, ave_waiting_time = 0, 0, 0
+    q = 4
+    gantt_chart = {'sequence': []}
+    processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+
+    def compute_awt():
+        awt = 0
+        for p in list(processes):
+            occurrences = [j for j in gantt_chart['sequence'] if j['process'] == p['process']]
+            previous = {}  # previous occurrence
+            pwt = 0  # process waiting time
+            for index, value in enumerate(occurrences):
+                if index < 1:
+                    pwt += value['start_time']
+                    previous = value
+                else:
+                    pwt += value['start_time'] - previous['end_time']
+                    # pwt += previous['duration']
+                    previous = value
+                print(f'\nvalue: {value}\npwt: {pwt}\n')
+            awt += pwt
+        return awt
+
+    for p in processes_copy:
+        same_priority = [i for i in processes_copy if i['arrival'] == p['arrival']]
+        if len(same_priority) > 1:
+            same_priority_total_burst = 0
+            partial_sum = 0
+            for item in same_priority:
+                same_priority_total_burst += int(item['burst'])
+
+            while partial_sum < same_priority_total_burst:
+                for i in same_priority:
+                    p_burst = int(i['burst'])
+                    d = p_burst - q  # difference
+                    duration = p_burst if d < 0 else q
+                    if duration > 0:
+                        end_time += duration
+                        # get the index of the matching process
+                        p_index = next(
+                            (index for index, value in enumerate(processes_copy) if value['process'] == i['process']),
+                            None)
+                        processes_copy[p_index]['burst'] = str(p_burst - duration)
+                        gantt_chart['sequence'].append({
+                            'process': processes_copy[p_index]['process'],
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'duration': duration
+                        })
+                        partial_sum += duration
+                        start_time = end_time
+        else:
+            end_time += int(p['burst'])
+            gantt_chart['sequence'].append({
+                'process': p['process'],
+                'start_time': start_time,
+                'end_time': end_time,
+                'duration': int(p['burst'])
+            })
+            start_time = end_time
+
+    gantt_chart['ave_waiting_time'] = compute_awt() / float(len(processes))
+    print(f'gantt: {gantt_chart}')
+    return gantt_chart
