@@ -98,9 +98,9 @@ def shortest_time_remaining_first(processes):
     return gantt_chart
 
 
-def round_robin(processes):
+def round_robin(processes, init_start=0, init_end=0):
     start_time, end_time, ave_waiting_time, \
-    burst_sum, index, duration, total_duration = 0, 0, 0, 0, 0, 0, 0
+    burst_sum, index, duration, total_duration = init_start, init_end, 0, 0, 0, 0, 0
     q = 4  # quantum
     gantt_chart = {'sequence': []}
     processes_copy = sorted(list(processes), key=itemgetter('arrival'))
@@ -124,30 +124,26 @@ def round_robin(processes):
     for i in processes_copy:
         burst_sum += int(i['burst'])
 
-    while end_time < burst_sum:
+    partial_sum = 0
+    while partial_sum < burst_sum:
         p_burst = int(processes_copy[index]['burst'])
         d = p_burst - q  # difference
         if p_burst > 0:
             duration = p_burst if d < 0 else q
             end_time += duration
             total_duration += duration
+            partial_sum += duration
             processes_copy[index]['burst'] = str(p_burst - duration)
             if gantt_chart['sequence']:
                 last = gantt_chart['sequence'][-1]
-                if processes_copy[index]['process'] != last['process']:
-                    start_time = last['end_time']
-                    gantt_chart['sequence'].append({
-                        'process': processes_copy[index]['process'],
-                        'start_time': start_time,
-                        'end_time': end_time,
-                        'duration': duration
-                    })
-                    total_duration = 0
-                else:
-                    gantt_chart['sequence'][-1]['duration'] = total_duration
-                    gantt_chart['sequence'][-1]['end_time'] = end_time
-                    processes_copy[index]['burst'] = str(p_burst - duration)
-                    total_duration = 0
+                start_time = last['end_time']
+                gantt_chart['sequence'].append({
+                    'process': processes_copy[index]['process'],
+                    'start_time': start_time,
+                    'end_time': end_time,
+                    'duration': duration
+                })
+                total_duration = 0
             else:
                 gantt_chart['sequence'].append({
                     'process': processes_copy[index]['process'],
@@ -156,10 +152,11 @@ def round_robin(processes):
                     'duration': duration
                 })
                 start_time = end_time
+                total_duration = 0
         index = 0 if index >= len(processes_copy) - 1 else index + 1
     ave_waiting_time = compute_awt() / len(processes_copy)
     gantt_chart['ave_waiting_time'] = ave_waiting_time
-    print(f'gantt: {gantt_chart}')
+    print(f'rr gantt: {gantt_chart}')
     return gantt_chart
 
 
@@ -176,3 +173,52 @@ def priority(processes):
     gantt_chart['ave_waiting_time'] = ave_waiting_time / float(len(processes))
     print(f'gantt: {gantt_chart}')
     return gantt_chart
+
+
+def priority_round_robin(processes):
+    start_time, end_time, ave_waiting_time = 0, 0, 0
+    q = 4
+    gantt_chart = {'sequence': []}
+    processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+
+    def compute_awt():
+        awt = 0
+        for p in list(processes):
+            occurrences = [j for j in gantt_chart['sequence'] if j['process'] == p['process']]
+            previous = {}  # previous occurrence
+            pwt = 0  # process waiting time
+            for index, value in enumerate(occurrences):
+                if index < 1:
+                    pwt += value['start_time']
+                    previous = value
+                else:
+                    pwt += value['start_time'] - previous['end_time']
+                    previous = value
+            awt += pwt
+        return awt
+
+    index = 0
+    while index < len(processes_copy):
+        same_priority = [i for i in processes_copy if i['arrival'] == processes_copy[index]['arrival']]
+        if len(same_priority) > 1:
+            partial_gantt = round_robin(same_priority, start_time, end_time)
+            sequence = partial_gantt['sequence']
+            index += len(same_priority)
+            end_time = sequence[-1]['end_time']
+            start_time = end_time
+            gantt_chart['sequence'] += partial_gantt['sequence']
+        else:
+            end_time += int(processes_copy[index]['burst'])
+            gantt_chart['sequence'].append({
+                'process': processes_copy[index]['process'],
+                'start_time': start_time,
+                'end_time': end_time,
+                'duration': int(processes_copy[index]['burst'])
+            })
+            start_time = end_time
+            index += 1
+
+    gantt_chart['ave_waiting_time'] = compute_awt() / float(len(processes))
+    print(f'priorr gantt: {gantt_chart}\n\n')
+    return gantt_chart
+
