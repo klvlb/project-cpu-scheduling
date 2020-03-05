@@ -103,7 +103,8 @@ def round_robin(processes, init_start=0, init_end=0):
     burst_sum, index, duration, total_duration = init_start, init_end, 0, 0, 0, 0, 0
     q = 4  # quantum
     gantt_chart = {'sequence': []}
-    processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+    processes_copy = list(processes)
+    # processes_copy = sorted(list(processes), key=itemgetter('arrival'))
 
     def compute_awt():
         awt = 0
