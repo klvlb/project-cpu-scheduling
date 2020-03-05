@@ -1,7 +1,7 @@
 from operator import itemgetter
 
 data = {
-    'algo': 'rr',
+    'algo': 'priorr',
     'processes': [
         # {'process': 1, 'arrival': '4', 'burst': '3'},
         # {'process': 2, 'arrival': '0', 'burst': '24'},
@@ -31,9 +31,9 @@ data = {
         # {'process': 3, 'arrival': '2', 'burst': '9'},
         # {'process': 4, 'arrival': '3', 'burst': '5'},
         # rr 5.66667 good
-        {'process': 1, 'arrival': '0', 'burst': '24'},
-        {'process': 2, 'arrival': '0', 'burst': '3'},
-        {'process': 3, 'arrival': '0', 'burst': '3'},
+        # {'process': 1, 'arrival': '0', 'burst': '24'},
+        # {'process': 2, 'arrival': '0', 'burst': '3'},
+        # {'process': 3, 'arrival': '0', 'burst': '3'},
         # priorr 13.4 good
         # {'process': 1, 'burst': '4', 'arrival': '3'},
         # {'process': 2, 'burst': '5', 'arrival': '2'},
@@ -55,7 +55,8 @@ def round_robin(processes, init_start=0, init_end=0):
     burst_sum, index, duration, total_duration = init_start, init_end, 0, 0, 0, 0, 0
     q = 4  # quantum
     gantt_chart = {'sequence': []}
-    processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+    # processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+    processes_copy = list(processes)
 
     def compute_awt():
         awt = 0
@@ -114,6 +115,7 @@ def round_robin(processes, init_start=0, init_end=0):
 
 def priority(processes):
     start_time, end_time, ave_waiting_time = 0, 0, 0
+    # gantt_chart = {'sequence': list(processes)}
     gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('arrival'))}
     for item in gantt_chart['sequence']:
         end_time += int(item['burst'])
@@ -132,6 +134,7 @@ def priority_round_robin(processes):
     q = 4
     gantt_chart = {'sequence': []}
     processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+    # processes_copy = list(processes)
 
     def compute_awt():
         awt = 0
