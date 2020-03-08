@@ -35,17 +35,6 @@ export default {
         series: this.series,
         dataLabels: {
           enabled: true,
-          //   formatter: (val, opts) => {
-          //     const label = opts.w.globals.labels[opts.dataPointIndex];
-          //     const a = moment(val[0]);
-          //     const b = moment(val[1]);
-          //     const diff = b.diff(a, 'days');
-          //     return `${label}|: |${diff}| |${(diff > 1 ? ' days' : ' day')}`;
-          //   },
-          //   style: {
-          //     colors: ['#f3f4f5', '#fff'],
-          //   },
-          // },
           grid: {
             row: {
               colors: ['#f3f4f5', '#567'],
@@ -106,10 +95,8 @@ export default {
       this.series = [{
         data: [],
       }];
-      // this.ganttData.sequence.forEach((item) => {
       let g = '0x0';
       let b = '0x0';
-
       for (let i = 0; i < this.ganttData.sequence.length; i += 1) {
         const item = this.ganttData.sequence[i];
         g += '0xa0';

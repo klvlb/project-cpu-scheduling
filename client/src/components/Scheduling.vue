@@ -1,46 +1,51 @@
 <template>
   <div>
-    <form method='post' id='algo-form'>
-      <select id='algo-select' ref='algoSelect' name='algo-list' form='algo-form'>
-        <option value='fcfs'>First-Come, First-Served</option>
-        <option value='sjf'>Shortest Job First</option>
-        <option value='srtf'>Shortest Remaining Time First</option>
-        <option value='rr'>Round Robin</option>
-        <option value='prio'>Priority Scheduling</option>
-        <option value='priorr'>Priority Scheduling with Round Robin</option>
-      </select>
-      <div id='process-add-container' ref='processAddContainer'>
-        <div class='input-block'>
-          <label class='input-label'>Arrival</label>
-          <input id='arrival-time-input' ref='arrivalTimeInput' type='integer'/>
+    <div class='section'>
+      <form method='post' id='algo-form'>
+        <select id='algo-select' ref='algoSelect' name='algo-list' form='algo-form'>
+          <option value='fcfs'>First-Come, First-Served</option>
+          <option value='sjf'>Shortest Job First</option>
+          <option value='srtf'>Shortest Remaining Time First</option>
+          <option value='rr'>Round Robin</option>
+          <option value='prio'>Priority Scheduling</option>
+          <option value='priorr'>Priority Scheduling with Round Robin</option>
+        </select>
+        <div id='process-add-container' ref='processAddContainer'>
+          <div class='input-block'>
+            <label class='input-label'>Arrival</label>
+            <input id='arrival-time-input' ref='arrivalTimeInput' type='integer'/>
+          </div>
+          <div class='input-block'>
+            <label>Priority</label>
+            <input id='priority-input' ref='priorityInput' type='integer'/>
+          </div>
+          <div class='input-block'>
+            <label>Burst</label>
+            <input id='burst-time-input' ref='burstTimeInput' type='integer'/>
+          </div>
+          <button id='add-process-btn' @click='addProcess' type='button'>Add Process</button>
         </div>
-        <div class='input-block'>
-          <label>Priority</label>
-          <input id='priority-input' ref='priorityInput' type='integer'/>
-        </div>
-        <div class='input-block'>
-          <label>Burst</label>
-          <input id='burst-time-input' ref='burstTimeInput' type='integer'/>
-        </div>
-        <button id='add-process-btn' @click='addProcess' type='button'>Add Process</button>
+      </form>
+    </div>
+    <div class='section'>
+      <div class='process-list-labels'>
+        <span class='list-label'>Process Number</span>
+        <span class='list-label'>Arrival</span>
+        <span class='list-label'>Priority</span>
+        <span class='list-label'>Burst</span>
       </div>
       <ul id='process-list'>
         <li class='process' v-for='(item, index) in processes' v-bind:key=index>
-          <div class='input-block'>
-            {{ item }}
-            <span class='list-label'>Process Number</span>
+          <div class='entry-block'>
             <span class='process-no'>{{ item.process }}</span>
           </div>
-          <div class='input-block'>
-            <span class='list-label'>Arrival</span>
+          <div class='entry-block'>
             <span class='process-arrival'>{{ item.arrival }}</span>
           </div>
-          <div class='input-block'>
-            <span class='list-label'>Priority</span>
+          <div class='entry-block'>
             <span class='process-priority'>{{ item.priority }}</span>
           </div>
-          <div class='input-block'>
-            <span class='list-label'>Burst</span>
+          <div class='entry-block'>
             <span class='process-burst'>{{ item.burst }}</span>
           </div>
         </li>
@@ -52,10 +57,6 @@
               class='btn btn-primary'>
         Graph
       </button>
-    </form>
-    {{ algo }}
-    <div>
-      {{ ganttData }}
     </div>
     <div id='chart'>
       <apexchart type='rangeBar' height='350' :options='chartOptions' :series='series'></apexchart>
@@ -64,22 +65,74 @@
 </template>
 
 <script src='../js/scheduling.js'></script>
-<!--<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>-->
+
 
 <style lang='scss'>
-  .input-block {
-    display: inline-block;
+  // form
 
-    /*input {*/
-    /*  display: block;*/
-    /*}*/
-    /*    'start': 'browser-sync start --server \'src/\' --files \'src/\' --single',*/
-    /*--index 'public/index.html' --server 'src' --files '.!*.*'*/
+  #algo-form {
+    margin: 30px 0 0 0;
+    width: max-content;
+
+    #process-add-container {
+      margin: 30px 0 0 0;
+    }
+
+    #add-process-btn {
+      margin: 30px 0 0 0;
+    }
+  }
+
+  .input-block {
+    display: block;
+    margin: 15px 0;
 
     label {
       display: block;
-      text-align: left;
+      text-align: center;
       text-transform: uppercase;
     }
+  }
+
+  // processes list
+
+  #process-list {
+    width: max-content;
+    margin: 0 auto;
+
+    li {
+      list-style-type: none;
+      border-bottom: 1px solid #42b983;
+
+      .entry-block {
+        display: inline-block;
+        margin: 15px;
+        width: 65px;
+      }
+    }
+  }
+
+  #algo-form-submit-btn {
+    margin: 30px;
+  }
+
+  .process-list-labels {
+    margin: 30px 0 0 0;
+
+    span {
+      display: inline-block;
+      font-weight: bold;
+      margin: 0 15px;
+      width: 65px;
+      vertical-align: top;
+    }
+  }
+
+  // common
+
+  .section {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 50px;
   }
 </style>
