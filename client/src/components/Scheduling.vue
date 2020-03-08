@@ -61,6 +61,7 @@
     <div id='chart'>
       <apexchart type='rangeBar' height='350' :options='chartOptions' :series='series'></apexchart>
     </div>
+    <div id='awt'>Average waiting time: {{ this.ganttData.ave_waiting_time }} ns</div>
   </div>
 </template>
 
@@ -68,6 +69,10 @@
 
 
 <style lang='scss'>
+  // constants
+
+  $vueColor: #42b983;
+
   // form
 
   #algo-form {
@@ -90,7 +95,8 @@
     label {
       display: block;
       text-align: center;
-      text-transform: uppercase;
+      text-transform: capitalize;
+      font-weight: bold;
     }
   }
 
@@ -102,7 +108,7 @@
 
     li {
       list-style-type: none;
-      border-bottom: 1px solid #42b983;
+      border-bottom: 1px solid $vueColor;
 
       .entry-block {
         display: inline-block;
@@ -128,11 +134,24 @@
     }
   }
 
+  #awt {
+    margin: 50px 0 0 0;
+    font-weight: bold;
+    color: $vueColor;
+  }
+
   // common
 
   .section {
     display: inline-block;
     vertical-align: top;
     padding: 0 50px;
+  }
+
+  button {
+    background: $vueColor;
+    width: 100px;
+    padding: 10px;
+    border-radius: 5px;
   }
 </style>
