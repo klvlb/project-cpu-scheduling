@@ -163,7 +163,7 @@ def round_robin(processes, init_start=0, init_end=0):
 
 def priority(processes):
     start_time, end_time, ave_waiting_time = 0, 0, 0
-    gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('arrival'))}
+    gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('priority'))}
     for item in gantt_chart['sequence']:
         end_time += int(item['burst'])
         ave_waiting_time += start_time
@@ -180,7 +180,7 @@ def priority_round_robin(processes):
     start_time, end_time, ave_waiting_time = 0, 0, 0
     q = 4
     gantt_chart = {'sequence': []}
-    processes_copy = sorted(list(processes), key=itemgetter('arrival'))
+    processes_copy = sorted(list(processes), key=itemgetter('priority'))
 
     def compute_awt():
         awt = 0
@@ -222,4 +222,23 @@ def priority_round_robin(processes):
     gantt_chart['ave_waiting_time'] = compute_awt() / float(len(processes))
     print(f'priorr gantt: {gantt_chart}\n\n')
     return gantt_chart
+
+
+def designate_algo(algo, processes):
+    switcher = {
+        'fcfs': first_come_first_serve,
+        'sjf': shortest_job_first,
+        'rr': round_robin,
+        'prio': priority,
+        'priorr': priority_round_robin,
+        'strf': shortest_time_remaining_first,
+    }
+    return switcher.get(algo, lambda: 'Scheduler invalid!')(processes)
+
+
+def evaluate(data):
+    algo = data['algo']
+    processes = data['processes']
+    print(f'{algo}')
+    return designate_algo(algo, processes)
 
