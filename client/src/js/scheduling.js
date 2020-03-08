@@ -33,25 +33,26 @@ export default {
           show: true,
         },
         series: this.series,
-        // dataLabels: {
-        //   enabled: true,
-        //   formatter: (val, opts) => {
-        //     const label = opts.w.globals.labels[opts.dataPointIndex];
-        //     const a = moment(val[0]);
-        //     const b = moment(val[1]);
-        //     const diff = b.diff(a, 'days');
-        //     return `${label}|: |${diff}| |${(diff > 1 ? ' days' : ' day')}`;
-        //   },
-        //   style: {
-        //     colors: ['#f3f4f5', '#fff'],
-        //   },
-        // },
-        // grid: {
-        //   row: {
-        //     colors: ['#f3f4f5', '#fff'],
-        //     opacity: 1,
-        //   },
-        // },
+        dataLabels: {
+          enabled: true,
+          //   formatter: (val, opts) => {
+          //     const label = opts.w.globals.labels[opts.dataPointIndex];
+          //     const a = moment(val[0]);
+          //     const b = moment(val[1]);
+          //     const diff = b.diff(a, 'days');
+          //     return `${label}|: |${diff}| |${(diff > 1 ? ' days' : ' day')}`;
+          //   },
+          //   style: {
+          //     colors: ['#f3f4f5', '#fff'],
+          //   },
+          // },
+          grid: {
+            row: {
+              colors: ['#f3f4f5', '#567'],
+              opacity: 1,
+            },
+          },
+        },
       },
     };
   },
