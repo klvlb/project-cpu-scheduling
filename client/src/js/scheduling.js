@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import ApexCharts from 'apexcharts';
 
 
 export default {
@@ -10,6 +11,48 @@ export default {
       calculations: [],
       algo: '',
       ganttData: {},
+      series: [],
+      chartOptions: {
+        chart: {
+          height: 350,
+          type: 'rangeBar',
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            distributed: true,
+            dataLabels: {
+              hideOverflowingLabels: false,
+            },
+          },
+        },
+        xaxis: {
+          type: 'numeric',
+        },
+        yaxis: {
+          show: true,
+        },
+        series: this.series,
+        // dataLabels: {
+        //   enabled: true,
+        //   formatter: (val, opts) => {
+        //     const label = opts.w.globals.labels[opts.dataPointIndex];
+        //     const a = moment(val[0]);
+        //     const b = moment(val[1]);
+        //     const diff = b.diff(a, 'days');
+        //     return `${label}|: |${diff}| |${(diff > 1 ? ' days' : ' day')}`;
+        //   },
+        //   style: {
+        //     colors: ['#f3f4f5', '#fff'],
+        //   },
+        // },
+        // grid: {
+        //   row: {
+        //     colors: ['#f3f4f5', '#fff'],
+        //     opacity: 1,
+        //   },
+        // },
+      },
     };
   },
   methods: {
@@ -48,9 +91,53 @@ export default {
           }
         },
         success: (result) => {
-          this.ganttData = result;
+          this.ganttData = {
+            sequence: result.sequence,
+            awt: result.ave_waiting_time,
+          };
+          console.log(this.ganttData);
+          this.chartOptions.series = this.series;
+          this.createChart();
         },
       });
+    },
+    createChart() {
+      this.series = [{
+        data: [],
+      }];
+      // this.ganttData.sequence.forEach((item) => {
+      let g = '0x0';
+      let b = '0x0';
+
+      for (let i = 0; i < this.ganttData.sequence.length; i += 1) {
+        const item = this.ganttData.sequence[i];
+        g += '0xa0';
+        b += '0x10';
+        console.log(item.process);
+        this.series[0].data.push({
+          x: `P${item.process}`,
+          y: [
+            item.start_time,
+            item.end_time,
+          ],
+          fillColor: this.fullColorHex(100, g, b),
+        });
+      }
+      const chart = new ApexCharts(document.querySelector('#chart'), this.chartOptions);
+      chart.render();
+    },
+    fullColorHex(r, g, b) {
+      const red = this.rgbToHex(r);
+      const green = this.rgbToHex(g);
+      const blue = this.rgbToHex(b);
+      return red + green + blue;
+    },
+    rgbToHex(c) {
+      let hex = Number(c).toString(16);
+      if (hex.length < 2) {
+        hex = `'0'${hex}`;
+      }
+      return hex;
     },
   },
 };

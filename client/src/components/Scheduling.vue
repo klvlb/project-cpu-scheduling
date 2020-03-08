@@ -54,13 +54,17 @@
       </button>
     </form>
     {{ algo }}
-    {{ ganttData }}
-    {{ calculations }}
+    <div>
+      {{ ganttData }}
+    </div>
+    <div id='chart'>
+      <apexchart type='rangeBar' height='350' :options='chartOptions' :series='series'></apexchart>
+    </div>
   </div>
 </template>
 
 <script src='../js/scheduling.js'></script>
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+<!--<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>-->
 
 <style lang='scss'>
   .input-block {
@@ -69,8 +73,8 @@
     /*input {*/
     /*  display: block;*/
     /*}*/
-    /*    "start": "browser-sync start --server \"src/\" --files \"src/\" --single",*/
-/*--index 'public/index.html' --server 'src' --files '.!*.*'*/
+    /*    'start': 'browser-sync start --server \'src/\' --files \'src/\' --single',*/
+    /*--index 'public/index.html' --server 'src' --files '.!*.*'*/
 
     label {
       display: block;
