@@ -54,6 +54,7 @@
       </button>
     </form>
     {{ algo }}
+    {{ ganttData }}
     {{ calculations }}
   </div>
 </template>

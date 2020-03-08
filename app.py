@@ -23,8 +23,8 @@ def schedule_processes():
     }
     print(f'data{data}')
     gantt = evaluate(data)
-    return jsonify(gantt)
-    # return gantt
+    # return jsonify(gantt)
+    return gantt
 
 
 if __name__ == '__main__':
