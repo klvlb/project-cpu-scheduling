@@ -8,7 +8,8 @@ def first_come_first_serve(processes):
     gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('arrival'))}
     for item in gantt_chart['sequence']:
         end_time += int(item['burst'])
-        ave_waiting_time += (start_time - int(item['arrival']))
+        # ave_waiting_time += (start_time - int(item['arrival']))
+        ave_waiting_time += start_time
         item['start_time'] = start_time
         item['end_time'] = end_time
         start_time = end_time

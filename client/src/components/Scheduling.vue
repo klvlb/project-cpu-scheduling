@@ -59,9 +59,10 @@
       </button>
     </div>
     <div id='chart'>
-      <apexchart type='rangeBar' height='350' :options='chartOptions' :series='series'></apexchart>
+      <apexchart name='chart' type='rangeBar' height='350' :options='chartOptions'
+                 :series='series'></apexchart>
     </div>
-    <div id='awt'>Average waiting time: {{ this.ganttData.ave_waiting_time }} ns</div>
+    <div id='awt'>Average waiting time: {{ this.ganttData.awt }} ns</div>
   </div>
 </template>
 

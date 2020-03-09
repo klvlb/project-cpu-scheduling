@@ -86,7 +86,7 @@ export default {
             awt: result.ave_waiting_time,
           };
           console.log(this.ganttData);
-          this.chartOptions.series = this.series;
+          // this.chartOptions.series = this.series;
           this.createChart();
         },
       });
@@ -111,6 +111,7 @@ export default {
           fillColor: this.fullColorHex(100, g, b),
         });
       }
+      this.chartOptions.series = this.series;
       const chart = new ApexCharts(document.querySelector('#chart'), this.chartOptions);
       chart.render();
     },
