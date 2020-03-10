@@ -66,6 +66,6 @@
   </div>
 </template>
 
-<script src='../../js/scheduling.js'></script>
+<script src='../../js/os/scheduling.js'></script>
 
 <style lang='scss' src='../../scss/scheduling.scss'></style>

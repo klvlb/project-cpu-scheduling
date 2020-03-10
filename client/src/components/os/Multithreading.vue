@@ -2,7 +2,7 @@
   <div>Source code not yet uploaded.</div>
 </template>
 
-<script src='../../js/multithreading.js'></script>
+<script src='../../js/os/multithreading.js'></script>
 
 <style lang='scss'>
 
