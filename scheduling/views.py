@@ -22,6 +22,7 @@ def first_come_first_serve(processes, q):
 def shortest_job_first(processes, q):
     start_time, end_time, ave_waiting_time = 0, 0, 0
     gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('burst'))}
+    print(f'{gantt_chart["sequence"]}')
     for item in gantt_chart['sequence']:
         item.pop('arrival', None)
         end_time += int(item['burst'])
@@ -57,7 +58,7 @@ def shortest_time_remaining_first(processes, q):
             pwt = 0  # process waiting time
             for index, value in enumerate(occurrences):
                 if index < 1:
-                    pwt += value['start_time'] - int(p['arrival'])
+                    pwt += value['start_time'] - p['arrival']
                     previous = value
                 else:
                     pwt += value['start_time'] - previous['end_time']
@@ -65,16 +66,16 @@ def shortest_time_remaining_first(processes, q):
         return awt
 
     for i in processes_copy:
-        burst_sum += int(i['burst'])
+        burst_sum += i['burst']
 
     while end_time < burst_sum:
-        processes_copy = [p for p in processes_copy if int(p['burst']) > 0]
-        raw_alive = [p for p in processes_copy if int(p['arrival']) <= end_time]
+        processes_copy = [p for p in processes_copy if p['burst'] > 0]
+        raw_alive = [p for p in processes_copy if p['arrival'] <= end_time]
         sorted_alive = sorted(raw_alive, key=itemgetter('burst'))
-        sorted_alive[0]['burst'] = str(int(sorted_alive[0]['burst']) - 1)
+        sorted_alive[0]['burst'] = sorted_alive[0]['burst'] - 1
         shortest = sorted_alive[0]
 
-        if int(shortest['burst']) < 1:
+        if shortest['burst'] < 1:
             processes_copy = [p for p in processes_copy if p['process'] != shortest['process']]
 
         end_time += 1
@@ -86,7 +87,7 @@ def shortest_time_remaining_first(processes, q):
                 append_new_process(shortest['process'], shortest['burst'])
             else:
                 duration += 1
-                gantt_chart['sequence'][-1]['burst'] = str(int(gantt_chart['sequence'][-1]['burst']) - 1)
+                gantt_chart['sequence'][-1]['burst'] = gantt_chart['sequence'][-1]['burst'] - 1
                 gantt_chart['sequence'][-1]['end_time'] = end_time
                 gantt_chart['sequence'][-1]['duration'] = duration
         else:
@@ -231,7 +232,7 @@ def designate_algo(algo, processes, q):
         'rr': round_robin,
         'prio': priority,
         'priorr': priority_round_robin,
-        'strf': shortest_time_remaining_first,
+        'srtf': shortest_time_remaining_first,
     }
     return switcher.get(algo, lambda: 'Scheduler invalid!')(processes, q)
 
@@ -239,6 +240,13 @@ def designate_algo(algo, processes, q):
 def evaluate(data):
     algo = data['algo']
     processes = data['processes']
+
+    processes = [{
+        'process': int(i['process']),
+        'burst': int(i['burst']),
+        'arrival': int(i['arrival']),
+        'priority': int(i['priority']),
+    } for i in processes]
     q = data['quantum']
     print(f'{algo}')
     return designate_algo(algo, processes, q)
