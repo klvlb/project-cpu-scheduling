@@ -65,7 +65,8 @@ export default {
       }
     },
     submitAlgoForm() {
-      const path = 'http://localhost:5000/cpu-scheduling';
+      const path = 'http://10.10.79.155:5000/cpu-scheduling';
+      // const path = 'http://localhost:5000/cpu-scheduling';
       this.algo = this.$refs.algoSelect.value;
       const data = {
         algo: this.algo,
