@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../components/Home.vue';
-import Scheduling from '../components/Scheduling.vue';
+import Scheduling from '../components/os/Scheduling.vue';
+import Multithreading from '../components/os/Multithreading.vue';
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/cpu-scheduling',
     name: 'Scheduling',
     component: Scheduling,
+  },
+  {
+    path: '/multithreading-add',
+    name: 'Multithreading',
+    component: Multithreading,
   },
 ];
 

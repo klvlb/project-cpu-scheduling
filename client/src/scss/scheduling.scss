@@ -1,0 +1,83 @@
+@import 'constants';
+
+// form
+
+#algo-form {
+  margin: 30px 0 0 0;
+  width: max-content;
+
+  #process-add-container {
+    margin: 30px 0 0 0;
+  }
+
+  #add-process-btn {
+    margin: 30px 0 0 0;
+  }
+}
+
+.input-block {
+  display: block;
+  margin: 15px 0;
+
+  label {
+    display: block;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+}
+
+// processes list
+
+#process-list {
+  width: max-content;
+  margin: 0 auto;
+
+  li {
+    list-style-type: none;
+    border-bottom: 1px solid $vueColor;
+
+    .entry-block {
+      display: inline-block;
+      margin: 15px;
+      width: 65px;
+    }
+  }
+}
+
+#algo-form-submit-btn {
+  margin: 30px;
+}
+
+.process-list-labels {
+  margin: 30px 0 0 0;
+
+  span {
+    display: inline-block;
+    font-weight: bold;
+    margin: 0 15px;
+    width: 65px;
+    vertical-align: top;
+  }
+}
+
+#awt {
+  margin: 50px 0 0 0;
+  font-weight: bold;
+  color: $vueColor;
+}
+
+// common
+
+.section {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 50px;
+}
+
+button {
+  background: $vueColor;
+  width: 100px;
+  padding: 10px;
+  border-radius: 5px;
+}

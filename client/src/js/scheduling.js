@@ -10,7 +10,9 @@ export default {
       processCount: 1,
       calculations: [],
       algo: '',
-      ganttData: {},
+      ganttData: {
+        awt: 0,
+      },
       series: [],
       chartOptions: {
         chart: {
