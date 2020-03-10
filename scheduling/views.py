@@ -182,6 +182,7 @@ def priority_round_robin(processes):
     q = 4
     gantt_chart = {'sequence': []}
     processes_copy = sorted(list(processes), key=itemgetter('priority'))
+    # start_time = processes_copy[0]['arrival']
 
     def compute_awt():
         awt = 0
@@ -201,7 +202,7 @@ def priority_round_robin(processes):
 
     index = 0
     while index < len(processes_copy):
-        same_priority = [i for i in processes_copy if i['arrival'] == processes_copy[index]['arrival']]
+        same_priority = [i for i in processes_copy if i['priority'] == processes_copy[index]['priority']]
         if len(same_priority) > 1:
             partial_gantt = round_robin(same_priority, start_time, end_time)
             sequence = partial_gantt['sequence']
