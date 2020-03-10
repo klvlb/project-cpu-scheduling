@@ -19,7 +19,8 @@ def hello_world():
 def schedule_processes():
     data = {
         'algo': request.values.get('algo'),
-        'processes': json.loads(request.values.get('processes'))
+        'processes': json.loads(request.values.get('processes')),
+        'quantum': int(request.values.get('quantum'))
     }
     print(f'data{data}')
     gantt = evaluate(data)

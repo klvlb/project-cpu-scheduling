@@ -70,6 +70,7 @@ export default {
       const data = {
         algo: this.algo,
         processes: JSON.stringify(this.processes),
+        quantum: this.$refs.quantumTimeInput.value,
       };
       console.log(data);
       $.ajax({
@@ -103,7 +104,6 @@ export default {
         const item = this.ganttData.sequence[i];
         g += '0xa0';
         b += '0x10';
-        console.log(item.process);
         this.series[0].data.push({
           x: `P${item.process}`,
           y: [

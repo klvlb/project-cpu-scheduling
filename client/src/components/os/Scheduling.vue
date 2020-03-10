@@ -23,6 +23,10 @@
             <label>Burst</label>
             <input id='burst-time-input' ref='burstTimeInput' type='integer'/>
           </div>
+          <div class='input-block'>
+            <label>Quantum</label>
+            <input id='quantum-time-input' ref='quantumTimeInput' type='integer'/>
+          </div>
           <button id='add-process-btn' @click='addProcess' type='button'>Add Process</button>
         </div>
       </form>

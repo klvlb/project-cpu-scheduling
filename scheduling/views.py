@@ -3,7 +3,7 @@ from flask import Flask
 from operator import itemgetter
 
 
-def first_come_first_serve(processes):
+def first_come_first_serve(processes, q):
     start_time, end_time, ave_waiting_time = 0, 0, 0
     gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('arrival'))}
     for item in gantt_chart['sequence']:
@@ -19,7 +19,7 @@ def first_come_first_serve(processes):
     return gantt_chart
 
 
-def shortest_job_first(processes):
+def shortest_job_first(processes, q):
     start_time, end_time, ave_waiting_time = 0, 0, 0
     gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('burst'))}
     for item in gantt_chart['sequence']:
@@ -34,7 +34,7 @@ def shortest_job_first(processes):
     return gantt_chart
 
 
-def shortest_time_remaining_first(processes):
+def shortest_time_remaining_first(processes, q):
     start_time, end_time, ave_waiting_time, burst_sum = 0, 0, 0, 0
     gantt_chart = {'sequence': []}
     processes_copy = sorted(list(processes), key=itemgetter('arrival'))
@@ -99,10 +99,9 @@ def shortest_time_remaining_first(processes):
     return gantt_chart
 
 
-def round_robin(processes, init_start=0, init_end=0):
+def round_robin(processes, q, init_start=0, init_end=0):
     start_time, end_time, ave_waiting_time, \
     burst_sum, index, duration, total_duration = init_start, init_end, 0, 0, 0, 0, 0
-    q = 4  # quantum
     gantt_chart = {'sequence': []}
     processes_copy = list(processes)
     # processes_copy = sorted(list(processes), key=itemgetter('arrival'))
@@ -162,7 +161,7 @@ def round_robin(processes, init_start=0, init_end=0):
     return gantt_chart
 
 
-def priority(processes):
+def priority(processes, q):
     start_time, end_time, ave_waiting_time = 0, 0, 0
     gantt_chart = {'sequence': sorted(list(processes), key=itemgetter('priority'))}
     for item in gantt_chart['sequence']:
@@ -177,9 +176,8 @@ def priority(processes):
     return gantt_chart
 
 
-def priority_round_robin(processes):
+def priority_round_robin(processes, q):
     start_time, end_time, ave_waiting_time = 0, 0, 0
-    q = 4
     gantt_chart = {'sequence': []}
     processes_copy = sorted(list(processes), key=itemgetter('priority'))
     # start_time = processes_copy[0]['arrival']
@@ -204,7 +202,7 @@ def priority_round_robin(processes):
     while index < len(processes_copy):
         same_priority = [i for i in processes_copy if i['priority'] == processes_copy[index]['priority']]
         if len(same_priority) > 1:
-            partial_gantt = round_robin(same_priority, start_time, end_time)
+            partial_gantt = round_robin(same_priority, q, start_time, end_time)
             sequence = partial_gantt['sequence']
             index += len(same_priority)
             end_time = sequence[-1]['end_time']
@@ -226,7 +224,7 @@ def priority_round_robin(processes):
     return gantt_chart
 
 
-def designate_algo(algo, processes):
+def designate_algo(algo, processes, q):
     switcher = {
         'fcfs': first_come_first_serve,
         'sjf': shortest_job_first,
@@ -235,12 +233,13 @@ def designate_algo(algo, processes):
         'priorr': priority_round_robin,
         'strf': shortest_time_remaining_first,
     }
-    return switcher.get(algo, lambda: 'Scheduler invalid!')(processes)
+    return switcher.get(algo, lambda: 'Scheduler invalid!')(processes, q)
 
 
 def evaluate(data):
     algo = data['algo']
     processes = data['processes']
+    q = data['quantum']
     print(f'{algo}')
-    return designate_algo(algo, processes)
+    return designate_algo(algo, processes, q)
 
