@@ -1,14 +1,20 @@
 import $ from 'jquery';
-import ApexCharts from 'apexcharts';
-
+// import ApexCharts from 'apexcharts';
+import VueApexCharts from 'vue-apexcharts';
 
 export default {
   name: 'Scheduling',
+  components: {
+    apexchart: VueApexCharts,
+  },
   data() {
     return {
       processes: [],
       processCount: 1,
       calculations: [],
+      showArrivalInputBlock: false,
+      showPriorityInputBlock: false,
+      showQuantumInputBlock: false,
       algo: '',
       ganttData: {
         awt: 0,
@@ -48,10 +54,41 @@ export default {
     };
   },
   methods: {
+    disableSomeInputs() {
+      this.algo = this.$refs.algoSelect.value;
+      switch (this.algo) {
+        case 'fcfs':
+        case 'sjf':
+        default:
+          this.showPriorityInputBlock = false;
+          this.showQuantumInputBlock = false;
+          this.showArrivalInputBlock = false;
+          break;
+        case 'srtf':
+          this.showPriorityInputBlock = false;
+          this.showQuantumInputBlock = false;
+          this.showArrivalInputBlock = true;
+          break;
+        case 'rr':
+          this.showPriorityInputBlock = false;
+          this.showQuantumInputBlock = true;
+          this.showArrivalInputBlock = false;
+          break;
+        case 'prio':
+          this.showPriorityInputBlock = true;
+          this.showQuantumInputBlock = false;
+          this.showArrivalInputBlock = false;
+          break;
+        case 'priorr':
+          this.showPriorityInputBlock = true;
+          this.showQuantumInputBlock = true;
+          this.showArrivalInputBlock = false;
+      }
+    },
     addProcess() {
       const [arrival, priority, burst] = [
-        this.$refs.arrivalTimeInput.value,
-        this.$refs.priorityInput.value,
+        this.showArrivalInputBlock ? this.$refs.arrivalTimeInput.value : '0',
+        this.showPriorityInputBlock ? this.$refs.priorityInput.value : '0',
         this.$refs.burstTimeInput.value,
       ];
       if (burst && arrival && priority) {
@@ -63,6 +100,7 @@ export default {
         });
         this.processCount += 1;
       }
+      console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
       const path = 'http://10.10.79.155:5000/cpu-scheduling';
@@ -71,7 +109,7 @@ export default {
       const data = {
         algo: this.algo,
         processes: JSON.stringify(this.processes),
-        quantum: this.$refs.quantumTimeInput.value,
+        quantum: this.showQuantumInputBlock ? this.$refs.quantumTimeInput.value : '1',
       };
       console.log(data);
       $.ajax({
@@ -115,7 +153,7 @@ export default {
         });
       }
       this.chartOptions.series = this.series;
-      const chart = new ApexCharts(document.querySelector('#chart'), this.chartOptions);
+      const chart = new VueApexCharts(document.querySelector('#chart'), this.chartOptions);
       chart.render();
     },
     fullColorHex(r, g, b) {
