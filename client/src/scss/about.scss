@@ -1,0 +1,25 @@
+@import 'constants';
+
+#about {
+  .wrapper {
+    max-width: 600px;
+    margin: 30px auto 0 auto;
+  }
+
+  .page-description {
+    font-size: 50px;
+    text-align: left;
+    margin-bottom: 30px;
+  }
+
+  .author {
+    font-size: 20px;
+    text-align: left;
+
+    span {
+      font-weight: bold;
+      color: $vueColor;
+      margin-left: 10px;
+    }
+  }
+}
