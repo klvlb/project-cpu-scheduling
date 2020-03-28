@@ -103,8 +103,8 @@ export default {
       console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
-      const path = 'http://10.10.79.155:5000/cpu-scheduling';
-      // const path = 'http://localhost:5000/cpu-scheduling';
+      // const path = 'http://10.10.79.155:5000/cpu-scheduling';
+      const path = 'http://127.0.0.1:5000/cpu-scheduling';
       this.algo = this.$refs.algoSelect.value;
       const data = {
         algo: this.algo,
@@ -171,3 +171,7 @@ export default {
     },
   },
 };
+
+    //
+    // "postinstall": "if test \\\"$NODE_ENV\\\" = \\\"production\\\" ; then npm run build ; fi ",
+    // "start": "browser-sync start --proxy localhost:8080",
