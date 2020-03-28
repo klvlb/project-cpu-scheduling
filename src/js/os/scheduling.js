@@ -171,7 +171,3 @@ export default {
     },
   },
 };
-
-    //
-    // "postinstall": "if test \\\"$NODE_ENV\\\" = \\\"production\\\" ; then npm run build ; fi ",
-    // "start": "browser-sync start --proxy localhost:8080",
