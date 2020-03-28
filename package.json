@@ -2,9 +2,12 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "6.13.x",
+    "node": "12.16.x"
+  },
   "scripts": {
-    "postinstall": "if test \\\"$NODE_ENV\\\" = \\\"production\\\" ; then npm run build ; fi ",
-    "start": "node src/server.js",
+    "start": "node server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -17,6 +20,7 @@
     "express": "^4.17.1",
     "fibers": "^4.0.2",
     "jquery": ">=3.4.0",
+    "path": "^0.12.7",
     "popper.js": "^1.16.1",
     "qs": "^6.9.1",
     "sass": "^1.26.1",
