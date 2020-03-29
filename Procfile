@@ -1,2 +1,2 @@
 web:node src/main.js
-web: app.py
+web:python app.py
