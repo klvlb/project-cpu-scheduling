@@ -15,7 +15,7 @@ def hello_world():
     return 'Hello World!'
 
 
-@app.route('/cpu-scheduling', methods=['POST', 'GET'])
+@app.route('/cpu-scheduling', methods=['POST'])
 def schedule_processes():
     data = {
         'algo': request.values.get('algo'),
