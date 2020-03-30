@@ -103,7 +103,7 @@ export default {
       console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
-      const path = 'https://assignment-collection.herokuapp.com:5000/cpu-scheduling';
+      const path = 'https://assignment-collection.herokuapp.com/cpu-scheduling';
       // const path = 'http://127.0.0.1:5000/cpu-scheduling';
       this.algo = this.$refs.algoSelect.value;
       const data = {

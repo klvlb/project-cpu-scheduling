@@ -29,5 +29,5 @@ def schedule_processes():
 
 
 if __name__ == '__main__':
-    app.run(host='10.10.79.155')
+    app.run()
     # app.run(host='localhost')
