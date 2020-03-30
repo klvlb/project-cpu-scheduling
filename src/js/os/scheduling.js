@@ -100,6 +100,7 @@ export default {
         });
         this.processCount += 1;
       }
+      // eslint-disable-next-line
       console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
@@ -111,6 +112,7 @@ export default {
         processes: JSON.stringify(this.processes),
         quantum: this.showQuantumInputBlock ? this.$refs.quantumTimeInput.value : '1',
       };
+      // eslint-disable-next-line
       console.log(data);
       $.ajax({
         url: path,
@@ -127,6 +129,7 @@ export default {
             sequence: result.sequence,
             awt: result.ave_waiting_time,
           };
+          // eslint-disable-next-line
           console.log(this.ganttData);
           // this.chartOptions.series = this.series;
           this.createChart();
