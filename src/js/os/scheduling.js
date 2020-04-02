@@ -1,5 +1,4 @@
 import $ from 'jquery';
-// import ApexCharts from 'apexcharts';
 import VueApexCharts from 'vue-apexcharts';
 
 export default {
