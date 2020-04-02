@@ -6,9 +6,7 @@ module.exports = {
   // baseUrl: IS_PRODUCTION
   // ? 'http://cdn123.com'
   // : '/',
-  publicPath: IS_PRODUCTION
-    ? 'https://assignment-collection.herokuapp.com'
-    : '/',
+  publicPath: '/',
   // For Production, replace set baseUrl to CDN
   // And set the CDN origin to `yourdomain.com/static`
   // Whitenoise will serve once to CDN which will then cache
