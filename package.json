@@ -4,7 +4,7 @@
   "private": true,
   "engines": {
     "npm": "6.13.x",
-    "node": "12.16.x"
+    "node": "12.x"
   },
   "scripts": {
     "start": "node server.js",
