@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import VueApexCharts from 'vue-apexcharts';
-// import postReq from '../postRequest';
 
 export default {
   name: 'Scheduling',
@@ -19,7 +18,9 @@ export default {
       ganttData: {
         awt: 0,
       },
-      series: [],
+      series: [{
+        data: [],
+      }],
       chartOptions: {
         chart: {
           height: 350,
@@ -101,11 +102,10 @@ export default {
         this.processCount += 1;
       }
       // eslint-disable-next-line
-      console.log(arrival, priority, burst, this.processes);
+      // console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
-      const path = 'http://127.0.0.1:5000/cpu-scheduling';
-      // const path = 'https://assignment-collection.herokuapp.com:5000/cpu-scheduling';
+      const path = 'https://assignment-collection-backend.herokuapp.com/cpu-scheduling';
       this.algo = this.$refs.algoSelect.value;
       const data = {
         algo: this.algo,
@@ -113,48 +113,9 @@ export default {
         quantum: this.showQuantumInputBlock ? this.$refs.quantumTimeInput.value : '1',
       };
       // eslint-disable-next-line
-      console.log(data);
-
-      // postReq.fetchResource(path, data)
-      //   .then((response) => {
-      //     this.ganttData = {
-      //       sequence: response.sequence,
-      //       awt: response.ave_waiting_time,
-      //     };
-      //     // eslint-disable-next-line
-      //     console.log(this.ganttData);
-      //     this.createChart();
-      //   })
-      //   .catch((error) => {
-      //     this.error = error.message;
-      //   });
-
-      // $.ajax({
-      //   url: path,
-      //   port: 5000,
-      //   // type: 'POST',
-      //   data,
-      //   dataType: 'jsonp',
-      //   // beforeSend: (x) => {
-      //   //   if (x && x.overrideMimeType) {
-      //   //     x.overrideMimeType('application/json;charset=UTF-8');
-      //   //   }
-      //   // },
-      //   success: (result) => {
-      //     this.ganttData = {
-      //       sequence: result.sequence,
-      //       awt: result.ave_waiting_time,
-      //     };
-      //     // eslint-disable-next-line
-      //     console.log(this.ganttData);
-      //     // this.chartOptions.series = this.series;
-      //     this.createChart();
-      //   },
-      // });
+      // console.log(data);
       $.ajax({
-        // baseURL: 'http://127.0.0.1:5000/',
         url: path,
-        port: 5000,
         type: 'POST',
         data,
         dataType: 'json',
@@ -169,23 +130,11 @@ export default {
             awt: result.ave_waiting_time,
           };
           // eslint-disable-next-line
-          console.log(this.ganttData);
+          // console.log(this.ganttData);
           // this.chartOptions.series = this.series;
           this.createChart();
         },
       });
-      // $.getJSON(path, data, (res) => {
-      //   const result = res;
-      //   console.log('res: ', result);
-      //   this.ganttData = {
-      //     sequence: result.sequence,
-      //     awt: result.ave_waiting_time,
-      //   };
-      //   // eslint-disable-next-line
-      //   console.log(this.ganttData);
-      //   // this.chartOptions.series = this.series;
-      //   this.createChart();
-      // });
     },
     createChart() {
       this.series = [{
@@ -207,8 +156,8 @@ export default {
         });
       }
       this.chartOptions.series = this.series;
-      const chart = new VueApexCharts(document.querySelector('#chart'), this.chartOptions);
-      chart.render();
+      // const chart = new VueApexCharts(document.querySelector('#chart'), this.chartOptions);
+      // chart.render();
     },
     fullColorHex(r, g, b) {
       const red = this.rgbToHex(r);
