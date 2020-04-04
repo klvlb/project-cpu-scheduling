@@ -1,5 +1,4 @@
 import $ from 'jquery';
-// import ApexCharts from 'apexcharts';
 import VueApexCharts from 'vue-apexcharts';
 
 export default {
@@ -19,7 +18,9 @@ export default {
       ganttData: {
         awt: 0,
       },
-      series: [],
+      series: [{
+        data: [],
+      }],
       chartOptions: {
         chart: {
           height: 350,
@@ -100,18 +101,19 @@ export default {
         });
         this.processCount += 1;
       }
-      console.log(arrival, priority, burst, this.processes);
+      // eslint-disable-next-line
+      // console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
-      const path = 'https://assignment-collection.herokuapp.com:5000/cpu-scheduling';
-      // const path = 'http://127.0.0.1:5000/cpu-scheduling';
+      const path = 'https://assignment-collection-backend.herokuapp.com/cpu-scheduling';
       this.algo = this.$refs.algoSelect.value;
       const data = {
         algo: this.algo,
         processes: JSON.stringify(this.processes),
         quantum: this.showQuantumInputBlock ? this.$refs.quantumTimeInput.value : '1',
       };
-      console.log(data);
+      // eslint-disable-next-line
+      // console.log(data);
       $.ajax({
         url: path,
         type: 'POST',
@@ -127,7 +129,8 @@ export default {
             sequence: result.sequence,
             awt: result.ave_waiting_time,
           };
-          console.log(this.ganttData);
+          // eslint-disable-next-line
+          // console.log(this.ganttData);
           // this.chartOptions.series = this.series;
           this.createChart();
         },
@@ -153,8 +156,8 @@ export default {
         });
       }
       this.chartOptions.series = this.series;
-      const chart = new VueApexCharts(document.querySelector('#chart'), this.chartOptions);
-      chart.render();
+      // const chart = new VueApexCharts(document.querySelector('#chart'), this.chartOptions);
+      // chart.render();
     },
     fullColorHex(r, g, b) {
       const red = this.rgbToHex(r);
