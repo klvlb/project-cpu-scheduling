@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import VueApexCharts from 'vue-apexcharts';
+// import postReq from '../postRequest';
 
 export default {
   name: 'Scheduling',
@@ -103,8 +104,8 @@ export default {
       console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
-      const path = 'https://assignment-collection.herokuapp.com:5000/cpu-scheduling';
-      // const path = 'http://127.0.0.1:5000/cpu-scheduling';
+      const path = 'http://127.0.0.1:5000/cpu-scheduling';
+      // const path = 'https://assignment-collection.herokuapp.com:5000/cpu-scheduling';
       this.algo = this.$refs.algoSelect.value;
       const data = {
         algo: this.algo,
@@ -113,8 +114,47 @@ export default {
       };
       // eslint-disable-next-line
       console.log(data);
+
+      // postReq.fetchResource(path, data)
+      //   .then((response) => {
+      //     this.ganttData = {
+      //       sequence: response.sequence,
+      //       awt: response.ave_waiting_time,
+      //     };
+      //     // eslint-disable-next-line
+      //     console.log(this.ganttData);
+      //     this.createChart();
+      //   })
+      //   .catch((error) => {
+      //     this.error = error.message;
+      //   });
+
+      // $.ajax({
+      //   url: path,
+      //   port: 5000,
+      //   // type: 'POST',
+      //   data,
+      //   dataType: 'jsonp',
+      //   // beforeSend: (x) => {
+      //   //   if (x && x.overrideMimeType) {
+      //   //     x.overrideMimeType('application/json;charset=UTF-8');
+      //   //   }
+      //   // },
+      //   success: (result) => {
+      //     this.ganttData = {
+      //       sequence: result.sequence,
+      //       awt: result.ave_waiting_time,
+      //     };
+      //     // eslint-disable-next-line
+      //     console.log(this.ganttData);
+      //     // this.chartOptions.series = this.series;
+      //     this.createChart();
+      //   },
+      // });
       $.ajax({
+        // baseURL: 'http://127.0.0.1:5000/',
         url: path,
+        port: 5000,
         type: 'POST',
         data,
         dataType: 'json',
@@ -134,6 +174,18 @@ export default {
           this.createChart();
         },
       });
+      // $.getJSON(path, data, (res) => {
+      //   const result = res;
+      //   console.log('res: ', result);
+      //   this.ganttData = {
+      //     sequence: result.sequence,
+      //     awt: result.ave_waiting_time,
+      //   };
+      //   // eslint-disable-next-line
+      //   console.log(this.ganttData);
+      //   // this.chartOptions.series = this.series;
+      //   this.createChart();
+      // });
     },
     createChart() {
       this.series = [{
