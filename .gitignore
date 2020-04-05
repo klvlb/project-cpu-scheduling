@@ -4,6 +4,8 @@ dist
 package-lock.json
 
 # local env files
+.env
+.env.development
 .env.local
 .env.*.local
 

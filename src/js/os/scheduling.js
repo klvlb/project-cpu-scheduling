@@ -105,7 +105,7 @@ export default {
       // console.log(arrival, priority, burst, this.processes);
     },
     submitAlgoForm() {
-      const path = 'https://assignment-collection-backend.herokuapp.com/cpu-scheduling';
+      const path = String.prototype.concat(process.env.VUE_APP_BACKEND_APP_URL, '/cpu-scheduling');
       this.algo = this.$refs.algoSelect.value;
       const data = {
         algo: this.algo,
@@ -129,9 +129,6 @@ export default {
             sequence: result.sequence,
             awt: result.ave_waiting_time,
           };
-          // eslint-disable-next-line
-          // console.log(this.ganttData);
-          // this.chartOptions.series = this.series;
           this.createChart();
         },
       });
@@ -156,8 +153,6 @@ export default {
         });
       }
       this.chartOptions.series = this.series;
-      // const chart = new VueApexCharts(document.querySelector('#chart'), this.chartOptions);
-      // chart.render();
     },
     fullColorHex(r, g, b) {
       const red = this.rgbToHex(r);
